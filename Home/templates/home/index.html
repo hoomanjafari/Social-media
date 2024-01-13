@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="position-relative w-75 m-auto">
+        <div class="position-absolute p-1 m-1  rounded d-inline-block" style="height: 160px; width: 36%">
+            <form method="get" class="w-100 ms-3 mb-3">
+                <div class="d-inline-block">
+                    <p>{{ search_user.as_p }}</p>
+                </div>
+                <button class="d-inline-block btn btn-light mb-1" type="submit">Search</button>
+            </form>
+            {% for i in founded_user %}
+                <a href="{% url 'accounts:profile' i.id %}" class="link-danger p-2 bg-black rounded text-decoration-none fs-4 m-3">{{ i.username }}</a>
+            {% endfor %}
+        </div>
+
+        <div class="position-absolute end-0  rounded p-2 mt-3 d-inline-block" style="width: 60%;">
+            <div class="ms-5">
+                <form method="get" class="col-4 w-100 ms-5">
+                    <div class="d-inline-block">
+                        {{ search_post.as_p }}
+                    </div>
+                    <button type="submit" class="mb-4 ms-3 btn btn-light d-inline-block">Search</button>
+                </form>
+            </div>
+
+            {% for i in posts %}
+                <div class="bg-black rounded p-3 mb-3">
+                    <p class="text-danger text-center fs-4">{{ i.user }}</p>
+                    <div class="ms-5">
+                        <a href="{% url 'accounts:post_detail' i.id i.slug %}" class="text-decoration-none link-light">
+                            {{ i.body }} <br> ( {{ i.created|timesince }} ago ) <p class="text-light">( {{ i.like_counter }} Like )</p>
+                        </a>
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+    </div>
+{% endblock %}

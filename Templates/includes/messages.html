@@ -1,0 +1,5 @@
+{% if messages %}
+    {% for i in messages %}
+        <p class="w-50 m-auto mt-3 alert alert-{{ i.tags }}">{{ i.message }}</p>
+    {% endfor %}
+{% endif %}

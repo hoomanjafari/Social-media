@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <div class="rounded bg-black w-75 m-auto mt-5 p-3">
+        <div class="d-inline-block">
+            <p class="fs-3 text-light">Username : {{ user.username }}</p>
+        </div>
+        <label class="text-light ms-5 fs-4">Bio </label>
+        <div class="d-inline-block p-4 rounded ms-2 bg-light text-black fs-5">
+            <p class="">{{ user.profile_related.bio }}</p>
+        </div>
+        <p class="fs-5 text-light">Age : {{ user.profile_related.age }} Years Old</p>
+        <p class="text-secondary fs-5">Email : {{ user.email }}</p>
+        {% if request.user.is_authenticated and request.user.id == user.id %}
+            <a href="{% url 'accounts:edit_profile' %}" class="btn btn-light">Edit Profile</a>
+            <a href="{% url 'accounts:password_reset' %}" class="text-decoration-none ms-3">Reset Password</a>
+        {% elif request.user.id != user.id and request.user.is_authenticated and not is_follow %}
+            <a href="{% url 'home:follow_user' user.id %}" class="btn btn-light">Follow</a>
+        {% elif request.user.id != user.id and request.user.is_authenticated and is_follow %}
+            <a href="{% url 'home:follow_user' user.id %}" class="btn btn-light">Unfollow</a>
+        {% endif %}
+    </div>
+    <div class="rounded p-3 m-auto mt-3 bg-black w-75">
+        {% if request.user.id == user.id %}
+            <a href="{% url 'accounts:user_post' user.id %}" class="btn btn-light d-inline-block">Add Post</a>
+        {% endif %}
+        <h2 class="d-inline-block text-center text-light w-100">( POSTS )</h2>
+        <div class="ms-2 mt-5 bg-light p-3 rounded">
+            {% for i in post %}
+                <p class="fs-4">{{ i.body }}</p>
+                <p>( {{ i.created|timesince }} <span>{{ post.coun }}</span> )</p>
+                {% if request.user.id == user.id %}
+                    <diV>
+                        <a href="{% url 'accounts:edit_user_post' i.id i.slug %}" class="btn btn-dark">Edit Post</a>
+                        <a href="{% url 'accounts:delete_user_post' i.id %}" class="btn btn-dark">Delete Post</a>
+                    </diV>
+                {% endif %}
+                <a href="{% url 'accounts:post_detail' i.id i.slug %}" class="text-decoration-none">Post Details</a>
+                <hr>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
